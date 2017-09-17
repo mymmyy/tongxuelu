@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jxnd.tongxuelu.dao.BlogCommentMapper">
+<sql id="select">
+   id,blog_id,user_id,comment_user_id,comment_content,comment_time,delete_state
+</sql>
+<resultMap type="org.jxnd.tongxuelu.entity.BlogComment" id="BlogCommentMap">
+  <id property="id" column="id"/>
+  <result property="blogId" column="blog_id"/>
+  <result property="userId" column="user_id"/>
+  <result property="commentUserId" column="comment_user_id"/>
+  <result property="commentContent" column="comment_content"/>
+  <result property="commentTime" column="comment_time"/>
+  <result property="deleteState" column="delete_state"/>
+  <collection property="replyList" column="id" javaType="ArrayList" ofType="org.jxnd.tongxuelu.entity.ReplyComment" select="selectReply"/>
+</resultMap>
+<resultMap type="org.jxnd.tongxuelu.entity.ReplyComment" id="replyComment">
+  <id property="id" column="id"/>
+  <result property="commentId" column="comment_id"/>
+  <result property="commentUserId" column="comment_user_id"/>
+  <result property="replyUserId" column="reply_user_id"/>
+  <result property="replyContent" column="reply_content"/>
+  <result property="replyTime" column="reply_time"/>
+</resultMap>
+<!-- 查询评论以及回复 -->
+<select id="selectAllCommentAndReply" parameterType="String" resultMap="BlogCommentMap">
+  select 
+  <include refid="select"></include>
+   from blog_comment bc where blog_Id = #{blogId} and delete_state = 0;
+</select>
+<select id="selectReply" parameterType="int" resultMap="replyComment">
+ select id,comment_id,comment_user_id,reply_user_id,reply_content,reply_time from reply_comment where comment_id = #{id} and  delete_state = 0;
+</select>
+<!-- 添加评论 -->
+<insert id="addComment" parameterType="org.jxnd.tongxuelu.entity.BlogComment">
+insert into blog_comment(blog_id,user_id,comment_user_id,comment_content,comment_time) 
+values(#{blogId},#{userId},#{commentUserId},#{commentContent},#{commentTime})
+</insert>
+<!-- 添加回复 -->
+<insert id="addReply" parameterType="org.jxnd.tongxuelu.entity.ReplyComment">
+insert into reply_comment(comment_id,comment_user_id,reply_user_id,reply_content,reply_time) 
+values(#{commentId},#{commentUserId},#{replyUserId},#{replyContent},#{replyTime})
+</insert>
+<!-- 删除评论 -->
+<delete id="deleteComment" parameterType="int">
+ update  blog_comment set delete_state = 1 where id = #{id}
+</delete>
+<!-- 删除回复 -->
+<delete id="deleteReply" parameterType="int">
+ update  blog_comment set delete_state = 1  where comment_id = #{commentId}
+</delete>
+</mapper>

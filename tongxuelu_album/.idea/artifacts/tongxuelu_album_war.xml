@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" build-on-make="true" name="tongxuelu_album:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="tongxuelu_album.war">
+      <element id="artifact" artifact-name="tongxuelu_album:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="tongxuelu_album">
+    <output-path>$PROJECT_DIR$/out/artifacts/tongxuelu_album</output-path>
+    <root id="archive" name="tongxuelu_album.war" />
+  </artifact>
+</component>
