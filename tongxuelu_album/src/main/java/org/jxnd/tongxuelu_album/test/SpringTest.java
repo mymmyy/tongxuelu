@@ -147,10 +147,7 @@ public class SpringTest {
 	}
 
 
-	@Test
-	public void test10(){
-		System.out.println(iAlbumService.findAll().size());
-	}
+
 
 	@Test
 	public void test11(){

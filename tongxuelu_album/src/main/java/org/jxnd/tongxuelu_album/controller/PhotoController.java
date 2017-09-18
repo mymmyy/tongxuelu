@@ -2,6 +2,7 @@ package org.jxnd.tongxuelu_album.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.jxnd.tongxuelu.entity.User;
 import org.jxnd.tongxuelu_album.entity.Album;
 import org.jxnd.tongxuelu_album.entity.FtpConfig;
 import org.jxnd.tongxuelu_album.entity.Photo;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +46,13 @@ public class PhotoController {
      * 去往上传图片页面
      */
     @RequestMapping("/toUploadPic")
-    public String toUploadPic(Map<String,Object> map){
+    public String toUploadPic(Map<String,Object> map, HttpServletRequest request){
 
-        List<Album> albums = iAlbumService.findAll();
+        User existUser = (User) request.getSession().getAttribute("existUser");
+        if(existUser == null){
+            return "/index.ftl";
+        }
+        List<Album> albums = iAlbumService.findAllByUserId(existUser.getUserId());
         map.put("albums",albums);
         return "/upload.ftl";
     }
@@ -139,7 +145,7 @@ public class PhotoController {
 
 
         //查询所有的album
-        List<Album> albums = iAlbumService.findAll();
+        List<Album> albums = iAlbumService.findAllByUserId(userId);
         map.put("albums",albums);
 
 

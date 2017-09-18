@@ -39,8 +39,20 @@ public class AlbumController {
         PageHelper.startPage(pn,6);
         List<Album> albums = iAlbumService.selectAllByUserIdWithPhotoOne(userId);
         //使用PageInfo包装查询结果，只需要将pageInfo交给页面就可以
+        //如果该用户没有相册则为它创建一个名为 my album 的相册
+        if(albums == null || albums.isEmpty()){
+            Album album = new Album();
+            album.setUserId(userId);
+            album.setAlbumName("my album");
+            album.setViewLock(3);
+            iAlbumService.saveAlbum(album);
+            return "redirect:/AlbumController/list/"+userId+"/1";
+        }
         PageInfo pageInfo = new PageInfo(albums,3);
         //pageINfo封装了分页的详细信息，也可以指定连续显示的页数
+
+
+
         map.put("pageInfo",pageInfo);
 
         return "/index.ftl";

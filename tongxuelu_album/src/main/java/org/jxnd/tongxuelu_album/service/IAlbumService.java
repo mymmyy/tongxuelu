@@ -49,8 +49,9 @@ public interface IAlbumService {
     /**
      * 不关联查询，查询所有
      * @return
+     * @param userId
      */
-    List<Album> findAll();
+    List<Album> findAllByUserId(String userId);
 
     /**
      * 查询该用户的所有相册

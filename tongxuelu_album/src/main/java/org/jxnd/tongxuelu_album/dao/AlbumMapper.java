@@ -56,4 +56,5 @@ public interface AlbumMapper {
      * @return
      */
     Album checkAnswer(Album album);
+
 }

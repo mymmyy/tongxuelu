@@ -91,13 +91,14 @@ public class AlbumService implements IAlbumService{
     }
 
     /**
-     * 不关联查询，查询所有
+     * 关联查询，查询用户的所有
      *
      * @return
+     * @param userId
      */
     @Override
-    public List<Album> findAll() {
-        return albumMapper.selectByExample(null);
+    public List<Album> findAllByUserId(String userId) {
+        return albumMapper.selectAllByUserIdWithPhotoOne(userId);
     }
 
     /**
