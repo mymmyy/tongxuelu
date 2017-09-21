@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jxnd.tongxuelu.dao.PhotoMapper">
+  <resultMap id="BaseResultMap" type="org.jxnd.tongxuelu.entity.Photo">
+    <id column="photo_id" jdbcType="INTEGER" property="photoId" />
+    <result column="album_id" jdbcType="INTEGER" property="albumId" />
+    <result column="photo_desc" jdbcType="VARCHAR" property="photoDesc" />
+    <result column="photo_url" jdbcType="VARCHAR" property="photoUrl" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="delete_state" jdbcType="INTEGER" property="deleteState" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    photo_id, album_id, photo_desc, photo_url, update_time, delete_state
+  </sql>
+  
+  
+  
+<!--   添加方法 -->
+<select id="getAllPhoto" parameterType="org.jxnd.tongxuelu.entity.PhotoExample" resultMap="BaseResultMap">
+	select
+	<include refid="Base_Column_List" />
+	from photo limit #{pageIndex},#{size}
+</select>
+<delete id="deletePhoto" >
+  delete from photo where photo_id=#{photoId}
+</delete>
+<select id="getCount" resultType="int">
+select	count(*) from photo;
+</select>
+
+
+
+
+  <select id="selectByExample" parameterType="org.jxnd.tongxuelu.entity.PhotoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from photo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from photo
+    where photo_id = #{photoId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from photo
+    where photo_id = #{photoId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="org.jxnd.tongxuelu.entity.PhotoExample">
+    delete from photo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="org.jxnd.tongxuelu.entity.Photo">
+    insert into photo (photo_id, album_id, photo_desc, 
+      photo_url, update_time, delete_state
+      )
+    values (#{photoId,jdbcType=INTEGER}, #{albumId,jdbcType=INTEGER}, #{photoDesc,jdbcType=VARCHAR}, 
+      #{photoUrl,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{deleteState,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.jxnd.tongxuelu.entity.Photo">
+    insert into photo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="photoId != null">
+        photo_id,
+      </if>
+      <if test="albumId != null">
+        album_id,
+      </if>
+      <if test="photoDesc != null">
+        photo_desc,
+      </if>
+      <if test="photoUrl != null">
+        photo_url,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="deleteState != null">
+        delete_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="photoId != null">
+        #{photoId,jdbcType=INTEGER},
+      </if>
+      <if test="albumId != null">
+        #{albumId,jdbcType=INTEGER},
+      </if>
+      <if test="photoDesc != null">
+        #{photoDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl != null">
+        #{photoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteState != null">
+        #{deleteState,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="org.jxnd.tongxuelu.entity.PhotoExample" resultType="java.lang.Long">
+    select count(*) from photo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update photo
+    <set>
+      <if test="record.photoId != null">
+        photo_id = #{record.photoId,jdbcType=INTEGER},
+      </if>
+      <if test="record.albumId != null">
+        album_id = #{record.albumId,jdbcType=INTEGER},
+      </if>
+      <if test="record.photoDesc != null">
+        photo_desc = #{record.photoDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.photoUrl != null">
+        photo_url = #{record.photoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleteState != null">
+        delete_state = #{record.deleteState,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update photo
+    set photo_id = #{record.photoId,jdbcType=INTEGER},
+      album_id = #{record.albumId,jdbcType=INTEGER},
+      photo_desc = #{record.photoDesc,jdbcType=VARCHAR},
+      photo_url = #{record.photoUrl,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      delete_state = #{record.deleteState,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="org.jxnd.tongxuelu.entity.Photo">
+    update photo
+    <set>
+      <if test="albumId != null">
+        album_id = #{albumId,jdbcType=INTEGER},
+      </if>
+      <if test="photoDesc != null">
+        photo_desc = #{photoDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl != null">
+        photo_url = #{photoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteState != null">
+        delete_state = #{deleteState,jdbcType=INTEGER},
+      </if>
+    </set>
+    where photo_id = #{photoId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.jxnd.tongxuelu.entity.Photo">
+    update photo
+    set album_id = #{albumId,jdbcType=INTEGER},
+      photo_desc = #{photoDesc,jdbcType=VARCHAR},
+      photo_url = #{photoUrl,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_state = #{deleteState,jdbcType=INTEGER}
+    where photo_id = #{photoId,jdbcType=INTEGER}
+  </update>
+</mapper>

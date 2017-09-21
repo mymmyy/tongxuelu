@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jxnd.tongxuelu.dao.FriendDAOMapper">
+<sql id="selectFriend">
+ select f_id,my_id,friend_id,comment from friend f where 1=1
+</sql>
+<sql id="selectFriendAndUser">
+ select f.f_id,f.my_id,f.friend_id,f.comment,tu.user_id, tu.nickname, tu.qq, tu.email,tu.imgurl from friend f,t_user tu  
+</sql>
+<resultMap type="org.jxnd.tongxuelu.entity.Friend" id="friendMap">
+ <id property="fId" column="f_id"/>
+ <result property="myId" column="my_id"/>
+ <result property="friendId" column="friend_id"/>
+ <result property="comment" column="comment"/>
+ <association property="user" javaType="org.jxnd.tongxuelu.entity.User">
+    	<id column="user_id" jdbcType="VARCHAR" property="userId"/>
+    	<result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+    	<result column="qq" jdbcType="VARCHAR" property="qq"/>
+    	<result column="email" jdbcType="VARCHAR" property="email"/>
+    	<result column="imgurl" jdbcType="VARCHAR" property="imgurl"/>
+</association>
+</resultMap>
+<!-- 查询friend(按照f_id逆序分页) -->
+<select id="selectFriend"  resultMap="friendMap">
+<include refid="selectFriend"></include>
+ and my_id = #{myId} order by f_id desc 
+ <if test="start!=null and end!=null">
+  limit #{start},#{end}
+ </if>
+</select>
+<select id="selectAllFriendInfo" resultMap="friendMap">
+<include refid="selectFriendAndUser"></include> where f.friend_id=tu.user_id and f.my_id = #{myId} order by f_id desc 
+ <if test="start!=null and end!=null">
+  limit #{start},#{end}
+ </if> 
+</select>
+<sql id="addFriend">
+insert into friend(my_id,friend_id) 
+</sql>
+<insert id="addFriend" parameterType="org.jxnd.tongxuelu.entity.Friend">
+<include refid="addFriend"></include>
+values(#{myId},#{friendId})
+</insert>
+<delete id="deleteFriend" parameterType="int">
+  delete from friend where f_id=#{fId}
+</delete>
+<select id="selectCount" resultType="int">
+  select count(f_id) from friend where 1=1 and my_id = #{myId}
+</select>
+<update id="updateName">
+update friend set comment = #{comment} where f_id = #{fId}
+</update>
+<select id="selectIsFriend" resultType="int">
+select count(f_id) from friend where my_id = #{myId} and friend_id = #{friendId};
+</select>
+</mapper>

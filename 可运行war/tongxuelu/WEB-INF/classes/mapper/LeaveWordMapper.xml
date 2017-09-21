@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jxnd.tongxuelu.dao.LeaveWordMapper">
+<sql id="selectLeaveWord">
+ select lw.leave_word_id,lw.user_id,lw.leave_user_id,lw.leave_word_content,lw.leave_word_time,lw.is_name_hidden,lw.delete_state,tu.user_id,tu.nickname,tu.imgurl from leave_word lw,t_user tu where lw.leave_user_id=tu.user_id
+</sql>
+<resultMap type="org.jxnd.tongxuelu.entity.LeaveWord" id="leaveWordMap">
+ <id property="leaveWordId" column="leave_word_id"/>
+ <result property="userId" column="user_id"/>
+ <result property="leaveUserId" column="leave_user_id"/>
+ <result property="leaveWordContent" column="leave_word_content"/>
+ <result property="leaveWordTime" column="leave_word_time"/>
+ <result property="isNameHidden" column="is_name_hidden"/>
+ <result property="deleteState" column="delete_state"/>
+ <association  property="leaveUser"  column="leave_user_id"  javaType="org.jxnd.tongxuelu.entity.User" >
+ 	<id column="user_id" jdbcType="VARCHAR" property="userId"/>
+    <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+    <result column="imgurl" jdbcType="VARCHAR" property="imgurl"/>
+ </association>
+</resultMap>
+<!-- 查询留言(按照id逆序分页) -->
+<select id="selectLeaveWord" parameterType="Map" resultMap="leaveWordMap">
+<include refid="selectLeaveWord"></include>
+ <if test="userId!=null">
+ and lw.user_id=#{userId}
+ </if>
+ <if test="deleteState!=null">
+  and lw.delete_state=#{deleteState}
+ </if>
+ order by leave_word_id desc 
+ <if test="start!=null and end!=null">
+  limit #{start},#{end}
+ </if>
+</select>
+<sql id="addLeaveWord">
+insert into leave_word(user_id,leave_user_id,leave_word_content,leave_word_time,is_name_hidden,delete_state) 
+</sql>
+<insert id="addLeaveWord" parameterType="org.jxnd.tongxuelu.entity.LeaveWord">
+<include refid="addLeaveWord"></include>
+values(#{userId},#{leaveUserId},#{leaveWordContent},#{leaveWordTime},#{isNameHidden},#{deleteState})
+</insert>
+<delete id="deleteLeaveWord" parameterType="int">
+  delete from leave_word where leave_word_id=#{leaveWordId}
+</delete>
+<select id="selectCount" resultType="int">
+  select count(user_id) from leave_word 
+</select>
+</mapper>

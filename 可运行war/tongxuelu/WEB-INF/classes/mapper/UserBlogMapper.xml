@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jxnd.tongxuelu.dao.UserBlogMapper">
+  <resultMap id="BaseResultMap" type="org.jxnd.tongxuelu.entity.UserBlog">
+    <id column="blog_id" jdbcType="VARCHAR" property="blogId" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="blog_title" jdbcType="VARCHAR" property="blogTitle" />
+    <result column="blog_content" jdbcType="VARCHAR" property="blogContent" />
+    <result column="release_time" jdbcType="TIMESTAMP" property="releaseTime" />
+    <result column="delete_state" jdbcType="INTEGER" property="deleteState" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <association property="blogCategory" javaType="org.jxnd.tongxuelu.entity.BlogCategory">
+    	<id column="category_id" jdbcType="INTEGER" property="categoryId"/>
+    	<result column="category_name" jdbcType="VARCHAR" property="categoryName"/>
+    </association>
+    <association property="user" javaType="org.jxnd.tongxuelu.entity.User">
+    	<id column="user_id" jdbcType="VARCHAR" property="userId"/>
+    	<result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+    	<result column="qq" jdbcType="VARCHAR" property="qq"/>
+    	<result column="email" jdbcType="VARCHAR" property="email"/>
+    </association>
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.jxnd.tongxuelu.entity.UserBlog">
+    <result column="blog_content" jdbcType="LONGVARCHAR" property="blogContent" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    blog_id, category_id, blog_title, release_time, delete_state, user_id
+  </sql>
+  <sql id="Blob_Column_List">
+    blog_content
+  </sql>
+  
+  
+  
+  
+  <!-- 主要查询语句 -->
+  <sql id="TwoTable_List">
+  	ub.blog_id, ub.category_id, ub.blog_title, ub.blog_content,ub.release_time, ub.delete_state, ub.user_id, bc.category_id , bc.category_name,
+  	tr.user_id, tr.nickname, tr.qq, tr.email
+  </sql>
+  <select id="getAllUserBlog" resultMap="BaseResultMap">
+  	select <include refid="TwoTable_List"/> from user_blog ub,blog_category bc,t_user tr where ub.category_id=bc.category_id 
+	and ub.user_id=tr.user_id  and  ub.delete_state=0 ORDER BY ub.release_time DESC limit #{pn},#{size}
+  </select>
+  
+  <select id="getAllUserBlogByCategoryId" resultMap="BaseResultMap">
+  	select <include refid="TwoTable_List"/> from user_blog ub,blog_category bc,t_user tr where ub.category_id=bc.category_id 
+	and ub.user_id=tr.user_id and ub.category_id=#{categoryId} and  ub.delete_state=0 ORDER BY ub.release_time DESC limit #{pn},#{size}
+  </select>
+  
+  <select id="getAllUserBlogByUserId" resultMap="BaseResultMap">
+	select <include refid="TwoTable_List"/> from user_blog ub,blog_category bc,t_user tr where ub.category_id=bc.category_id 
+	and ub.user_id=tr.user_id and ub.user_id=#{userId} and  ub.delete_state=#{deleteState} ORDER BY ub.release_time DESC limit #{pn},#{size}
+	</select>
+	
+	<select id="getAllUserBlogWithLike" resultMap="BaseResultMap">
+  	select <include refid="TwoTable_List"/> from user_blog ub,blog_category bc,t_user tr where ub.category_id=bc.category_id 
+	and ub.user_id=tr.user_id  and  ub.delete_state=0 
+	and (bc.category_name like concat(concat('%',#{msg}),'%') or ub.blog_title like concat(concat('%',#{msg}),'%') or tr.nickname like concat(concat('%',#{msg}),'%')) 
+	ORDER BY ub.release_time DESC limit #{pn},#{size} 
+	
+  </select>
+	
+	
+	<select id="getUserBlogByBlogId" resultMap="BaseResultMap">
+	select <include refid="TwoTable_List"/> from user_blog ub,blog_category bc,t_user tr where ub.category_id=bc.category_id and ub.user_id=tr.user_id
+	and ub.blog_id=#{blogId}  
+	</select>
+	
+	<select id="getAllUserBlogCount" resultType="int">
+  	select count(*) from user_blog ub,blog_category bc,t_user tr where ub.category_id=bc.category_id 
+	and ub.user_id=tr.user_id  and  ub.delete_state=0 
+	<if test="categoryId != 0">
+    	AND ub.category_id=#{categoryId}
+  	</if>
+	<if test="userId != null">
+    	AND ub.user_id=#{userId}
+  	</if>
+  </select>
+	
+	<update id="updateUserBlogByBlogId">
+		update user_blog set blog_title=#{blogTitle},blog_content=#{blogContent},release_time=#{releaseTime},delete_state=#{deleteState} where blog_id=#{blogId}
+	</update>
+	
+	
+  <select id="selectByExampleWithBLOBs" parameterType="org.jxnd.tongxuelu.entity.UserBlogExample" resultMap="ResultMapWithBLOBs">
+    select 
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user_blog
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="org.jxnd.tongxuelu.entity.UserBlogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user_blog
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user_blog
+    where blog_id = #{blogId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from user_blog
+    where blog_id = #{blogId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="org.jxnd.tongxuelu.entity.UserBlogExample">
+    delete from user_blog
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="addArticle" parameterType="org.jxnd.tongxuelu.entity.UserBlog">
+    insert into user_blog (blog_id, category_id, blog_title, 
+      release_time, delete_state, user_id, 
+      blog_content)
+    values (#{blogId,jdbcType=VARCHAR}, #{categoryId,jdbcType=INTEGER}, #{blogTitle,jdbcType=VARCHAR}, 
+      #{releaseTime,jdbcType=TIMESTAMP}, #{deleteState,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, 
+      #{blogContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.jxnd.tongxuelu.entity.UserBlog">
+    insert into user_blog
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="blogId != null">
+        blog_id,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="blogTitle != null">
+        blog_title,
+      </if>
+      <if test="releaseTime != null">
+        release_time,
+      </if>
+      <if test="deleteState != null">
+        delete_state,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="blogContent != null">
+        blog_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="blogId != null">
+        #{blogId,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="blogTitle != null">
+        #{blogTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="releaseTime != null">
+        #{releaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteState != null">
+        #{deleteState,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="blogContent != null">
+        #{blogContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="org.jxnd.tongxuelu.entity.UserBlogExample" resultType="java.lang.Long">
+    select count(*) from user_blog
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update user_blog
+    <set>
+      <if test="record.blogId != null">
+        blog_id = #{record.blogId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.categoryId != null">
+        category_id = #{record.categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="record.blogTitle != null">
+        blog_title = #{record.blogTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.releaseTime != null">
+        release_time = #{record.releaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleteState != null">
+        delete_state = #{record.deleteState,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.blogContent != null">
+        blog_content = #{record.blogContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update user_blog
+    set blog_id = #{record.blogId,jdbcType=VARCHAR},
+      category_id = #{record.categoryId,jdbcType=INTEGER},
+      blog_title = #{record.blogTitle,jdbcType=VARCHAR},
+      release_time = #{record.releaseTime,jdbcType=TIMESTAMP},
+      delete_state = #{record.deleteState,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      blog_content = #{record.blogContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update user_blog
+    set blog_id = #{record.blogId,jdbcType=VARCHAR},
+      category_id = #{record.categoryId,jdbcType=INTEGER},
+      blog_title = #{record.blogTitle,jdbcType=VARCHAR},
+      release_time = #{record.releaseTime,jdbcType=TIMESTAMP},
+      delete_state = #{record.deleteState,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="org.jxnd.tongxuelu.entity.UserBlog">
+    update user_blog
+    <set>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="blogTitle != null">
+        blog_title = #{blogTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="releaseTime != null">
+        release_time = #{releaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteState != null">
+        delete_state = #{deleteState,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="blogContent != null">
+        blog_content = #{blogContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where blog_id = #{blogId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.jxnd.tongxuelu.entity.UserBlog">
+    update user_blog
+    set category_id = #{categoryId,jdbcType=INTEGER},
+      blog_title = #{blogTitle,jdbcType=VARCHAR},
+      release_time = #{releaseTime,jdbcType=TIMESTAMP},
+      delete_state = #{deleteState,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=VARCHAR},
+      blog_content = #{blogContent,jdbcType=LONGVARCHAR}
+    where blog_id = #{blogId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.jxnd.tongxuelu.entity.UserBlog">
+    update user_blog
+    set category_id = #{categoryId,jdbcType=INTEGER},
+      blog_title = #{blogTitle,jdbcType=VARCHAR},
+      release_time = #{releaseTime,jdbcType=TIMESTAMP},
+      delete_state = #{deleteState,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=VARCHAR}
+    where blog_id = #{blogId,jdbcType=VARCHAR}
+  </update>
+</mapper>
