@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
  * Created by mym on 2017/9/15.
@@ -35,7 +36,7 @@ public class SsoForward {
 
         return "redirect:"+"http://"+SSOUtil.getHostName(request)+
                 "/tongxuelu/space/homepage/"+existUser.getUserId()+
-                "?sessionId="+request.getRequestedSessionId();
+                "?sessionId="+request.getRequestedSessionId()+"&current="+new Date().getTime();
 
     }
 
@@ -48,7 +49,7 @@ public class SsoForward {
         User existUser = (User) request.getSession().getAttribute("existUser");
         return "redirect:"+"http://"+SSOUtil.getHostName(request)+
                 "/tongxuelu/chenbo/list"+
-                "?sessionId="+request.getRequestedSessionId();
+                "?sessionId="+request.getRequestedSessionId()+"&current="+new Date().getTime();
     }
 
 
@@ -60,7 +61,7 @@ public class SsoForward {
         User existUser = (User) request.getSession().getAttribute("existUser");
         return "redirect:"+"http://"+SSOUtil.getHostName(request)+
                 "/tongxuelu/space/leaveWord/"+existUser.getUserId()+
-                "?sessionId="+request.getRequestedSessionId();
+                "?sessionId="+request.getRequestedSessionId()+"&current="+new Date().getTime();
         //return "redirect:getLink?sessionId="+request.getRequestedSessionId();
     }
 
@@ -73,7 +74,7 @@ public class SsoForward {
         User existUser = (User) request.getSession().getAttribute("existUser");
         return "redirect:"+"http://"+SSOUtil.getHostName(request)+
                 "/tongxuelu/space/myFriend/"+existUser.getUserId()+
-                "?sessionId="+request.getRequestedSessionId();
+                "?sessionId="+request.getRequestedSessionId()+"&current="+new Date().getTime();
     }
 
 

@@ -36,7 +36,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
 
-        User existUser = (User) request.getSession().getAttribute("existUser");
+        /*User existUser = (User) request.getSession().getAttribute("existUser");
         if (existUser == null) {
 
             //再查询redis，如果用户存在，就设置session，让它登陆
@@ -68,7 +68,39 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
         }
 
-        return true;
+        return true;*/
+
+        //=================================修改后=============================
+        String sessionID = request.getParameter("sessionId");
+        User existUser = null;
+        if(sessionID == null){
+            //说明查本系统的session即可
+            existUser = (User) request.getSession().getAttribute("existUser");
+        }else{
+            //否则查redis
+            existUser = (org.jxnd.tongxuelu.entity.User) JedisUtil.getObject(jedisPoolUtil,sessionID);
+            System.out.println("查了redis");
+        }
+
+
+        if(existUser == null){
+            //redis中也没有的话，就跳转到登陆页面
+            //request.getSession().invalidate();      //清理一下
+            System.out.println("尚未登录，调到登录页面");
+            response.sendRedirect("/login.html");
+
+            return false;
+        }else{
+            //如果redis中查询到了，就把该用户存到session中
+            System.out.println("redis查询到了用户！");
+
+            existUser.setImgurl(ftpConfig.getIMAGE_BASE_URL()+existUser.getImgurl());
+            request.getSession().setAttribute("existUser",existUser);
+            return true;
+        }
+
+
+
     }
 
     @Override
