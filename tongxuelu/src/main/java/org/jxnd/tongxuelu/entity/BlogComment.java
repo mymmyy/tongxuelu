@@ -14,10 +14,10 @@ public class BlogComment implements Serializable{
    private Date commentTime;
    private Integer deleteState;
    private List<ReplyComment> replyList;
-   
-	public BlogComment(Integer id, String blogId, String userId,
+   private User user;
+public BlogComment(Integer id, String blogId, String userId,
 		String commentUserId, String commentContent, Date commentTime,
-		Integer deleteState, List<ReplyComment> replyList) {
+		Integer deleteState, List<ReplyComment> replyList, User user) {
 	super();
 	this.id = id;
 	this.blogId = blogId;
@@ -27,73 +27,77 @@ public class BlogComment implements Serializable{
 	this.commentTime = commentTime;
 	this.deleteState = deleteState;
 	this.replyList = replyList;
+	this.user = user;
 }
-	public BlogComment() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	public String getBlogId() {
-		return blogId;
-	}
-	public void setBlogId(String blogId) {
-		this.blogId = blogId;
-	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	public String getCommentUserId() {
-		return commentUserId;
-	}
-	public void setCommentUserId(String commentUserId) {
-		this.commentUserId = commentUserId;
-	}
-	public String getCommentContent() {
-		return commentContent;
-	}
-	public void setCommentContent(String commentContent) {
-		this.commentContent = commentContent;
-	}
-	public Date getCommentTime() {
-		return commentTime;
-	}
-	public void setCommentTime(Date commentTime) {
-		this.commentTime = commentTime;
-	}
-	public Integer getDeleteState() {
-		return deleteState;
-	}
-	public void setDeleteState(Integer deleteState) {
-		this.deleteState = deleteState;
-	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-	
-	public List<ReplyComment> getReplyList() {
-		return replyList;
-	}
-	public void setReplyList(List<ReplyComment> replyList) {
-		this.replyList = replyList;
-	}
-	@Override
-	public String toString() {
-		return "BlogComment [id=" + id + ", blogId=" + blogId + ", userId="
-				+ userId + ", commentUserId=" + commentUserId
-				+ ", commentContent=" + commentContent + ", commentTime="
-				+ commentTime + ", deleteState=" + deleteState + ", replyList="
-				+ replyList + "]";
-	}
-	
-	
+public BlogComment() {
+	super();
+	// TODO Auto-generated constructor stub
+}
+public Integer getId() {
+	return id;
+}
+public void setId(Integer id) {
+	this.id = id;
+}
+public String getBlogId() {
+	return blogId;
+}
+public void setBlogId(String blogId) {
+	this.blogId = blogId;
+}
+public String getUserId() {
+	return userId;
+}
+public void setUserId(String userId) {
+	this.userId = userId;
+}
+public String getCommentUserId() {
+	return commentUserId;
+}
+public void setCommentUserId(String commentUserId) {
+	this.commentUserId = commentUserId;
+}
+public String getCommentContent() {
+	return commentContent;
+}
+public void setCommentContent(String commentContent) {
+	this.commentContent = commentContent;
+}
+public Date getCommentTime() {
+	return commentTime;
+}
+public void setCommentTime(Date commentTime) {
+	this.commentTime = commentTime;
+}
+public Integer getDeleteState() {
+	return deleteState;
+}
+public void setDeleteState(Integer deleteState) {
+	this.deleteState = deleteState;
+}
+public List<ReplyComment> getReplyList() {
+	return replyList;
+}
+public void setReplyList(List<ReplyComment> replyList) {
+	this.replyList = replyList;
+}
+public User getUser() {
+	return user;
+}
+public void setUser(User user) {
+	this.user = user;
+}
+public static long getSerialversionuid() {
+	return serialVersionUID;
+}
+@Override
+public String toString() {
+	return "BlogComment [id=" + id + ", blogId=" + blogId + ", userId="
+			+ userId + ", commentUserId=" + commentUserId + ", commentContent="
+			+ commentContent + ", commentTime=" + commentTime
+			+ ", deleteState=" + deleteState + ", replyList=" + replyList
+			+ ", user=" + user + "]";
+}
    
    
 }

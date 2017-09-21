@@ -61,7 +61,7 @@ public class SSOURLInterceptor extends HandlerInterceptorAdapter {
 		
 		
 		//说明是要查询existUser
-		User existUser = (User) request.getSession().getAttribute("existUser");
+		User existUser = null;//(User) request.getSession().getAttribute("existUser");
 		if(existUser == null){
 			//不存在就去查redis，有异常一定要捕获，让程序继续运行
 			try {

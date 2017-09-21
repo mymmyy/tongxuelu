@@ -41,7 +41,6 @@
               <li><a href="${pageContext.request.contextPath}/space/logwrite/${sessionScope.spaceUser.userId}">写文章</a></li>
              <li><a href="${pageContext.request.contextPath}/space/myFriend/${sessionScope.spaceUser.userId}">我的好友</a></li>
             <li><a href="${pageContext.request.contextPath}/space/garbage/${sessionScope.spaceUser.userId}">文章回收站</a></li>
-            <li><a href="${pageContext.request.contextPath}/SsoForwardController/toAlbumSpace">相册系统</a></li>
          </c:when>
 	    </c:choose>
       </ul>
@@ -176,7 +175,7 @@ function showMyFriend(){
 		var list=data.extend.list;
 		for(var i=0;i<list.length;i++){
 			msg+='<ul class="avatar-list clf">';
-			msg+='<li><a href="/tongxuelu/homepage/'+list[0].friendId+'" target="_blank"><img src="'+list[i].user.imgurl+'" alt="'+list[i].user.nickname+'">';
+			msg+='<li><a href="/tongxuelu/space/homepage/'+list[0].friendId+'" target="_blank"><img src="'+list[i].user.imgurl+'" alt="'+list[i].user.nickname+'">';
 			msg+='<div class="a-name">'+list[i].user.nickname+'</div></a></li>';
 		}
 		myFriend.html(msg);

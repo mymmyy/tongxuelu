@@ -46,7 +46,6 @@ function initMyBlog(pn){
 		if(data==0){
 			alert("欢迎观看文章！");
 			$('.uploadhead').removeAttr('href');//去掉a标签中的href属性
-//			alert($(".mba").attr("href"))
 			$(".mba").each(function(){
 				var hrefText=$(this).attr('href');
 				var replaceHref=hrefText.replace("setUserBlog","getBlogByBlogId");

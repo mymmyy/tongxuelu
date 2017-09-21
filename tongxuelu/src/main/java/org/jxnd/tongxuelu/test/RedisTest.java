@@ -5,9 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.MessagingException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.jxnd.tongxuelu.service.IRedisCache;
+import org.jxnd.tongxuelu.utils.MailUtils;
+import org.jxnd.tongxuelu.utils.SSOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -48,6 +52,26 @@ public class RedisTest {
     		System.out.println("false");
     	}
     }
+    
+    
+    /**
+     * 测试邮件发送
+     */
+    @Test
+    public void sendMail(){
+    	try {
+	        String emailMsg = "注册成功，请在12小时内<a href='http:///tongxuelu/user/activeUser?activeCode="
+	                + "asgadsg"
+	                + "'>点击激活</a>====激活码是："
+	                + "123"+"<br/>如果连接不能跳转，请复制地址：http:///tongxuelu/user/activeUser?activeCode="
+	                +"123"+"<br/>到浏览器地址栏运行即可进行激活！";
+			MailUtils.sendMail("2739403728@qq.com", emailMsg);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
       
 
 }

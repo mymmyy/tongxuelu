@@ -17,6 +17,7 @@
         .text {
             border: 1px solid #ccc;
             height: 530px;
+            width: 900px;
         }
         .bul li{
 			float:left;
@@ -33,20 +34,20 @@
 </style>
 </head>
 <body>
-	<div>
+	<div style="margin-left: 300px;text-align: center;">
 		<input type="text" id="text2" disabled="disabled" value="${requestScope.userBlog.blogCategory.categoryName}">	
 	</div>
-	<div>
+	<div style="margin-left: 600px">
 		<input type="text" id="text1" value="${requestScope.userBlog.blogTitle}">
 	</div>
 	 <div id="div1" class="toolbar">
 	</div>
     <div style="padding: 5px 0; color: #ccc"></div>
-    <div id="div2" class="text" style="margin-left: 5px"> <!--可使用 min-height 实现编辑区域自动增加高度-->
+    <div id="div2" class="text" style="margin: auto;"> <!--可使用 min-height 实现编辑区域自动增加高度-->
         ${requestScope.userBlog.blogContent}
     </div>
     	
-    <div style="margin-left: 300px;margin-top: 8px">
+    <div style="margin-left: 260px;margin-top: 8px">
 	    	<ul class="bul">
 	    		<li><button type="button" id="button1" class="button gray tags" style="cursor:pointer;">确认修改</button></li>
 	    		<li><button type="button" id="button2" class="button gray tags" style="cursor:pointer;">删除文章</button></li>

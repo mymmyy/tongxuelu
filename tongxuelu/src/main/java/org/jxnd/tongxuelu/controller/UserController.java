@@ -9,12 +9,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.Valid;
 import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.jxnd.tongxuelu.entity.FtpConfig;
 import org.jxnd.tongxuelu.entity.User;
@@ -26,11 +26,8 @@ import org.jxnd.tongxuelu.utils.MailUtils;
 import org.jxnd.tongxuelu.utils.SSOUtil;
 import org.jxnd.tongxuelu.utils.UUIDUtil;
 import org.jxnd.tongxuelu.utils.UploadUtils;
-import org.jxnd.tongxuelu.utils.WangEditUploadMSG;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +37,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
+
 
 /**
  * 用户的Controller
@@ -347,7 +346,7 @@ public class UserController {
 		iUserService.updateHead(info);
 		
 		//iPictureService.addPicture(0, savePath);
-		
+		info.setImgurl(ftpConfig.getIMAGE_BASE_URL()+info.getImgurl());
 		return "space/homepage";
 	}
 	
@@ -361,7 +360,7 @@ public class UserController {
 	   public String judgeIsSpaceUser(HttpSession session){
 		   User spaceUser = (User)session.getAttribute("spaceUser");
 		   User existUser = (User)session.getAttribute("existUser");
-		   if(existUser.equals(spaceUser))
+		   if(existUser.getUserId().equals(spaceUser.getUserId()))
 			   return "1";
 		   else
 			   return "0";

@@ -13,9 +13,10 @@ public class ReplyComment implements Serializable{
     private String replyContent;
     private Date replyTime;
     private Integer deleteTime;
+    private User user;
 	public ReplyComment(Integer id, String commentId, String commentUserId,
 			String replyUserId, String replyContent, Date replyTime,
-			Integer deleteTime) {
+			Integer deleteTime, User user) {
 		super();
 		this.id = id;
 		this.commentId = commentId;
@@ -24,6 +25,7 @@ public class ReplyComment implements Serializable{
 		this.replyContent = replyContent;
 		this.replyTime = replyTime;
 		this.deleteTime = deleteTime;
+		this.user = user;
 	}
 	public ReplyComment() {
 		super();
@@ -71,6 +73,12 @@ public class ReplyComment implements Serializable{
 	public void setDeleteTime(Integer deleteTime) {
 		this.deleteTime = deleteTime;
 	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -80,7 +88,7 @@ public class ReplyComment implements Serializable{
 				+ ", commentUserId=" + commentUserId + ", replyUserId="
 				+ replyUserId + ", replyContent=" + replyContent
 				+ ", replyTime=" + replyTime + ", deleteTime=" + deleteTime
-				+ "]";
+				+ ", user=" + user + "]";
 	}
-    
+	
 }

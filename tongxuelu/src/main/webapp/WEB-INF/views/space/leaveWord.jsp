@@ -18,7 +18,7 @@
 var totalPage = 0;//总页码
 var totalRecords = 0;//总记录数
 var pageNo = 1;//开始页码
-var pageCount = 5;//每页条数
+var pageCount = 8;//每页条数
 $(function(){
 	$.get("/tongxuelu/user/judgeIsSpaceUser",{},function(data){
 		if(data==0){
@@ -68,7 +68,7 @@ function showMyFriend(){
 		var list=data.extend.list;
 		for(var i=0;i<list.length;i++){
 			msg+='<ul class="avatar-list clf">';
-			msg+='<li><a href="/tongxuelu/homepage/'+list[0].friendId+'" target="_blank"><img src="'+list[i].user.imgurl+'" alt="'+list[i].user.nickname+'">';
+			msg+='<li><a href="/tongxuelu/space/homepage/'+list[0].friendId+'" target="_blank"><img src="'+list[i].user.imgurl+'" alt="'+list[i].user.nickname+'">';
 			msg+='<div class="a-name">'+list[i].user.nickname+'</div></a></li>';
 		}
 		myFriend.html(msg);
@@ -87,9 +87,9 @@ function getLeaveWord(start,end){
 				$.each(data.extend.list,function(i,item){
 					msg += "<div class='c_list clf'>";
 					if(item.isNameHidden=="1"){//判断是否匿名,1表示不匿名
-						msg += "<div class='c_hpic'><a href='/tongxuelu/space/homepage/"+item.leaveUserId+"'><img src='/tongxuelu/static/img/head_snew.jpg' alt='头像' height='50' width='50'></a></div>";
+						msg += "<div class='c_hpic'><a href='/tongxuelu/space/homepage/"+item.leaveUserId+"'><img src='"+item.leaveUser.imgurl+"' alt='头像' height='50' width='50'></a></div>";
 					    msg += "<div class='c_fr'>";
-					    msg += "<p class='c_meta'><a href='/tongxuelu/space/homepage/"+item.leaveUserId+"' style='color:blue;'>"+item.leaveUserId+"</a>";
+					    msg += "<p class='c_meta'><a href='/tongxuelu/space/homepage/"+item.leaveUserId+"' style='color:blue;'>"+item.leaveUser.nickname+"</a>";
 					}
 					else{
 						msg += "<div class='c_hpic'><img src='/tongxuelu/static/img/head_snew.jpg' alt='头像' height='50' width='50'></div>";
@@ -161,7 +161,6 @@ function producePage(){
               <li><a href="${pageContext.request.contextPath}/space/logwrite/${sessionScope.spaceUser.userId}">写文章</a></li>
              <li><a href="${pageContext.request.contextPath}/space/myFriend/${sessionScope.spaceUser.userId}">我的好友</a></li>
             <li><a href="${pageContext.request.contextPath}/space/garbage/${sessionScope.spaceUser.userId}">文章回收站</a></li>
-            <li><a href="${pageContext.request.contextPath}/SsoForwardController/toAlbumSpace">相册系统</a></li>
          </c:when>
 	    </c:choose>
       </ul>
@@ -195,35 +194,7 @@ function producePage(){
             <h3>最近添加好友</h3>
           </div>
           <div class="bd" id="myFriend">
-            <ul class="avatar-list clf">
-              <li><a href="#" target="_blank"><img src="/tongxuelu/static/img/head_snew.jpg" alt="十二的头像">
-                <div class="a-name">十二</div>
-                </a></li>
-              <li><a href="#" target="_blank"><img src="/tongxuelu/static/img/head_snew.jpg" alt="十二的头像">
-                <div class="a-name">十二</div>
-                </a></li>
-              <li><a href="#" target="_blank"><img src="/tongxuelu/static/img/head_snew.jpg" alt="十二的头像">
-                <div class="a-name">十二</div>
-                </a></li>
-              <li><a href="#" target="_blank"><img src="/tongxuelu/static/img/head_snew.jpg" alt="十二的头像">
-                <div class="a-name">十二</div>
-                </a></li>
-              <li><a href="#" target="_blank"><img src="/tongxuelu/static/img/head_snew.jpg" alt="十二的头像">
-                <div class="a-name">十二</div>
-                </a></li>
-              <li><a href="#" target="_blank"><img src="/tongxuelu/static/img/head_snew.jpg" alt="十二的头像">
-                <div class="a-name">十二</div>
-                </a></li>
-              <li><a href="#" target="_blank"><img src="/tongxuelu/static/img/head_snew.jpg" alt="十二的头像">
-                <div class="a-name">十二</div>
-                </a></li>
-              <li><a href="#" target="_blank"><img src="/tongxuelu/static/img/head_snew.jpg" alt="十二的头像">
-                <div class="a-name">十二</div>
-                </a></li>
-              <li><a href="#" target="_blank"><img src="/tongxuelu/static/img/head_snew.jpg" alt="十二的头像">
-                <div class="a-name">十二</div>
-                </a></li>
-            </ul>
+            
           </div>
         </div>
       </div>
@@ -236,9 +207,11 @@ function producePage(){
             
           </div>
         </div>
-        <div class="inner">
+         <c:choose>
+	     <c:when test="${sessionScope.existUser.userId != sessionScope.spaceUser.userId}"><!-- 如果加入自己的空间-->
+             <div class="inner">
           <div class="hd">
-            <h3>给我留言(最多250字)</h3>
+            <h3>给他留言(最多250字)</h3>
           </div>
           <div class="quote_f">
             <form action="#" name="form1" method="post">
@@ -251,9 +224,12 @@ function producePage(){
             </form> 
           </div>
         </div>
+         </c:when>
+	    </c:choose>
+        
       </div>
     </div>
-    <div id="footer">Copyright &#169; 2014 www.5imb.com 版权所有</div>
+    <div id="footer">Copyright &#169; 2017 www.chenbo.com 版权所有</div>
   </div>
 </div>
 </body>

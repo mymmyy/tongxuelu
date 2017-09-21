@@ -7,6 +7,8 @@ import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
+import org.jxnd.tongxuelu.entity.Friend;
+import org.jxnd.tongxuelu.entity.FtpConfig;
 import org.jxnd.tongxuelu.entity.LeaveWord;
 import org.jxnd.tongxuelu.entity.User;
 import org.jxnd.tongxuelu.service.ILeaveWordService;
@@ -23,7 +25,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class LeaveWordController {
 	@Autowired
 	private ILeaveWordService leaveWordService;
-	
+	 @Autowired
+	private FtpConfig ftpConfig;
 	/**
 	 * @author Administrator
 	 * @param start,end 分页参数
@@ -41,8 +44,9 @@ public class LeaveWordController {
     	List<LeaveWord> list = null;
     	try {
 			list = this.leaveWordService.selectLeaveWord(map);
-			for (LeaveWord leaveWord : list) {
-				System.out.println(leaveWord.toString());
+			for(LeaveWord l : list){
+				User u=l.getLeaveUser();
+				u.setImgurl(ftpConfig.getIMAGE_BASE_URL()+u.getImgurl());
 			}
 			msg = MSG.success().add("list", list);
 		} catch (Exception e) {

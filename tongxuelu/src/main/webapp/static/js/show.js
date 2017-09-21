@@ -93,18 +93,19 @@ function getAllComment(){
 	    data:{"blogId":blogId},
 	    success:function(data){
 	        $.each(data.extend.list,function(i,item){
+	        	var name = item.user.nickname;
 	        	//alert(item.commentContent);
 	        	msg += "<li class='comment-content'><input type='hidden' class='commentId' value='"+item.id+"'><span class='comment-f'>#"+(parseInt(i)+1)+"</span>";
-	        	msg += "<div class='comment-main'><p><a class='replyUser' href='#' rel='nofollow'>"+item.commentUserId+"</a>";
+	        	msg += "<div class='comment-main'><p><a class='replyUser' href='/tongxuelu/space/homepage/"+item.commentUserId+"' rel='nofollow'>"+name+"</a>";
 	        	msg += "<span class='time'>("+item.commentTime+")</span>"
 	        	msg +="<a class='reply' href='javascript:void(0)'><img  src='/tongxuelu/static/img/reply.jpg'></a><input type='hidden' class='hidden' value='0'><br>"+item.commentContent+"</p></div>";
 	        	if(item.replyList.length>0){
-	        		$.each(item.replyList,function(i,item){
-	        			msg += "<div class='comment-main'><p><a class='replyUser' href='#' rel='nofollow'>"+item.replyUserId+"</a>";
+	        		$.each(item.replyList,function(i,it){
+	        			msg += "<div class='comment-main'><p><a class='replyUser' href='/tongxuelu/space/homepage/"+it.replyUserId+"' rel='nofollow'>"+it.user.nickname+"</a>";
 		        		msg += "<font color='black'> 回复  </font>"
-		        	    msg += "<a class='commentUser' href='#' rel='nofollow'>"+item.commentUserId+"</a>";
-			        	msg += "<span class='time'>("+item.replyTime+")</span>"
-			        	msg +="<a class='reply' href='javascript:void(0)'><img  src='/tongxuelu/static/img/reply.jpg'></a><input class='hidden' type='hidden' value='0'><br>"+item.replyContent+"</p></div>";
+		        	    msg += "<a class='commentUser' href='/tongxuelu/space/homepage/"+item.commentUserId+"' rel='nofollow'>"+name+"</a>";
+			        	msg += "<span class='time'>("+it.replyTime+")</span>"
+			        	msg +="<a class='reply' href='javascript:void(0)'><img  src='/tongxuelu/static/img/reply.jpg'></a><input class='hidden' type='hidden' value='0'><br>"+it.replyContent+"</p></div>";
 	        		});
 	        	}
 	        	msg +="</li>";

@@ -1,5 +1,7 @@
 package org.jxnd.tongxuelu.controller;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.jxnd.tongxuelu.utils.SSOUtil;
@@ -28,7 +30,7 @@ public class SsoForwardController {
 		
         return "redirect:"+"http://"+SSOUtil.getHostName(request)+
                 "/index"+
-                "?sessionId="+request.getRequestedSessionId();
+                "?sessionId="+request.getRequestedSessionId()+"&current="+new Date().getTime();
 	}
 	
 	

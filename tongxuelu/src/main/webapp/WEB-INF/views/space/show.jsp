@@ -33,15 +33,12 @@
 <style type="text/css">
 	#showArticle{
 		width: 700px;red;
-		text-align: center;
+		
 		background-color: white;
 		font-family: "楷体";
-		font-size: 17px;
+		font-size: 18px;
 	}
-	#showArticle img{
-		width: 500px;
-		height: 300px;
-	}
+	
 </style>
 </head>
 <body class="user-select" style="background-color: white;">
@@ -53,7 +50,7 @@
 	<c:choose>
 	    <c:when test="${sessionScope.existUser!=null}"><!-- 如果存在已经登录的用户 -->
         <li><a href="${pageContext.request.contextPath}/space/homepage/${sessionScope.existUser.userId}" rel="nofollow" >${sessionScope.existUser.nickname}</a></li>
-        <li><a href="javascript:void(0)" >退出</a></li>
+        <li><a href="${pageContext.request.contextPath}/exitSystem" >退出</a></li>
         </c:when>
         <c:otherwise>
         <li><a href="${pageContext.request.contextPath}/user/toLogin" rel="nofollow" >登录</a></li>
@@ -104,9 +101,9 @@
 	</article >
 	<br>
 	<br>
-	<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a></div>
+	<!--<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a></div>
 
-		  <script>                  window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "1", "bdSize": "32" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=0.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+		  <script>                  window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "1", "bdSize": "32" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=0.js?cdnversion=' + ~(-new Date() / 36e5)];</script>-->
   </article>
   <div class="article-tags"><!-- 标签：<a href="#list/2/" rel="tag" >DTcms博客</a><a href="#list/3/" rel="tag" >木庄网络博客</a><a href="#list/4/" rel="tag" >独立博客</a><a href="#list/5/" rel="tag" >修复优化</a>-->
 	</div>

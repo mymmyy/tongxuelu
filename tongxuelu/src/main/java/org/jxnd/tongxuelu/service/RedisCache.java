@@ -57,6 +57,7 @@ public class RedisCache implements IRedisCache {
         redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
             public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+            	
                 connection.setEx(bkey, expireTime, bvalue);
                 return true;
             }

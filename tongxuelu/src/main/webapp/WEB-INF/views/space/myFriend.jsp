@@ -52,7 +52,7 @@ function showMyFriend(){
 		var list=data.extend.list;
 		for(var i=0;i<list.length;i++){
 			msg+='<ul class="avatar-list clf">';
-			msg+='<li><a href="/tongxuelu/homepage/'+list[0].friendId+'" target="_blank"><img src="'+list[i].user.imgurl+'" alt="'+list[i].user.nickname+'">';
+			msg+='<li><a href="/tongxuelu/space/homepage/'+list[0].friendId+'" target="_blank"><img src="'+list[i].user.imgurl+'" alt="'+list[i].user.nickname+'">';
 			msg+='<div class="a-name">'+list[i].user.nickname+'</div></a></li>';
 		}
 		myFriend.html(msg);
@@ -86,16 +86,16 @@ function getFriend(start,end){
 	if(totalRecords>0){//如果条数大于零
 		$.ajax({
 			type: "post",
-			url: "/tongxuelu/friend/select?start="+start+"&end="+end,
+			url: "/tongxuelu/friend/selectFriendInfo?start="+start+"&end="+end,
 			dataType: 'json',
 			async:false,
 			success: function(data) {
 				var msg = "";
 				$.each(data.extend.list,function(i,item){
 					msg += "<div class='c_list clf' >";
-					msg += "<div class='c_hpic'><a href='/tongxuelu/space/homepage/"+item.friendId+"'><img src='/tongxuelu/static/img/head_snew.jpg' alt='头像' height='20' width='20'></a></div>";
+					msg += "<div class='c_hpic'><a href='/tongxuelu/space/homepage/"+item.friendId+"'><img src="+item.user.imgurl+" alt='头像' height='20' width='20'></a></div>";
 				    msg += "<div class='c_fr'>";
-				    msg += "<p class='c_meta'><a href='/tongxuelu/space/homepage/"+item.friendId+"' style='color:blue;'>"+item.friendId+"</a>";
+				    msg += "<p class='c_meta'><a href='/tongxuelu/space/homepage/"+item.friendId+"' style='color:blue;'>"+item.user.nickname+"</a>";
 				    msg +="<span class='c_time'><a class='del' href='javascript:void(0)'>删除</a><input class='fId' type='hidden' value='"+item.fId+"'>&nbsp;";
 				    if(item.comment==null){
 				    	 msg +="<a class='reName' href='javascript:void(0)'>添加备注</a></span></p>";
@@ -167,7 +167,6 @@ function producePage(){
               <li><a href="${pageContext.request.contextPath}/space/logwrite/${sessionScope.spaceUser.userId}">写文章</a></li>
              <li><a href="${pageContext.request.contextPath}/space/myFriend/${sessionScope.spaceUser.userId}">我的好友</a></li>
             <li><a href="${pageContext.request.contextPath}/space/garbage/${sessionScope.spaceUser.userId}">文章回收站</a></li>
-            <li><a href="${pageContext.request.contextPath}/SsoForwardController/toAlbumSpace">相册系统</a></li>
          </c:when>
 	    </c:choose>
       </ul>

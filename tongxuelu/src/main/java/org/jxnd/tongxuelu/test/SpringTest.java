@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.jxnd.tongxuelu.dao.UserMapper;
 import org.jxnd.tongxuelu.entity.FtpConfig;
 import org.jxnd.tongxuelu.entity.UserBlog;
+import org.jxnd.tongxuelu.service.ILeaveWordService;
 import org.jxnd.tongxuelu.service.IUserBlogService;
 import org.jxnd.tongxuelu.service.IUserService;
 import org.jxnd.tongxuelu.utils.FtpUtil;
@@ -22,7 +23,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -40,6 +43,9 @@ public class SpringTest {
     
     @Autowired
     private IUserBlogService iUserBlogService;
+    
+    @Autowired
+    private ILeaveWordService iLeaveWordService;
 
     
     @Test
@@ -53,6 +59,14 @@ public class SpringTest {
     		System.out.println(userBlog);
     	}*/
     	System.out.println(iUserBlogService.getAllUserBlogWithLike("爱情", 0, 5));
+    }
+    @Test
+    public void text4() throws Exception{
+    	Map<String,Object> map =new HashMap<String,Object>();
+    	map.put("userId", "20170904");
+    	map.put("start", 0);
+    	map.put("end", 5);
+    	System.out.println(iLeaveWordService.selectLeaveWord(map));
     }
     @Test
     public void testMD5(){

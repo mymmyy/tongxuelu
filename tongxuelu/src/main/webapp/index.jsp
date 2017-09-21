@@ -36,7 +36,7 @@
 	  </c:choose>
 	  
 	 
-		<li><a href="#" title="联系我们" >
+		<li><a href="javascript:alert('晨博潇洒小组拥有最终解释权');" title="联系我们" >
 			<i class="fa fa-rss">
 			</i> 联系我们
 		</a></li>
@@ -193,10 +193,10 @@
 		  <span id="sitetime">8888 </span></h2>
 	  </div>
 		<div role="tabpanel" class="tab-pane contact" id="contact">
-		  <h2>QQ:
+		  <h2>QQ:1821559323
 			  <a href="javascript:void(0)" target="_blank" rel="nofollow" data-toggle="tooltip" data-placement="bottom" title=""  data-original-title="QQ:"></a>
 		  </h2>
-		  <h2>Email:
+		  <h2>Email:15270898033@163.com
 		  <a href="javascript:void(0)" target="_blank" data-toggle="tooltip" rel="nofollow" data-placement="bottom" title=""  data-original-title="#"></a></h2>
 	  </div>
 	</div>

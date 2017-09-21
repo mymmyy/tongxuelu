@@ -41,7 +41,7 @@
 	 <c:choose>
 	    <c:when test="${sessionScope.existUser!=null}"><!-- 如果存在已经登录的用户 -->
         <li><a href="${pageContext.request.contextPath}/space/homepage/${sessionScope.existUser.userId}" rel="nofollow" >${sessionScope.existUser.nickname}</a></li>
-        <li><a href="javascript:void(0)" >退出</a></li>
+        <li><a href="${pageContext.request.contextPath}/exitSystem" >退出</a></li>
         </c:when>
         <c:otherwise>
         <li><a href="${pageContext.request.contextPath}/user/toLogin" rel="nofollow" >登录</a></li>

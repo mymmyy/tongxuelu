@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.jxnd.tongxuelu.entity.Friend;
+import org.jxnd.tongxuelu.entity.FtpConfig;
 import org.jxnd.tongxuelu.entity.User;
 import org.jxnd.tongxuelu.service.IFriendService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class FriendController {
     @Autowired
     private IFriendService dao;
     
+    @Autowired
+	private FtpConfig ftpConfig;
+    
     //添加我的好友
     @ResponseBody
     @RequestMapping("/add")
@@ -26,6 +30,7 @@ public class FriendController {
     	User user = (User)session.getAttribute("existUser");
     	User spaceUser = (User)session.getAttribute("spaceUser");
         friend.setFriendId(spaceUser.getUserId());
+        friend.setComment(spaceUser.getUserId());
     	friend.setMyId(user.getUserId());
     	try {
 			if(this.dao.addFriend(friend)){
@@ -45,6 +50,10 @@ public class FriendController {
     	User user = (User)session.getAttribute("spaceUser");
     	try {
 			List<Friend> list = this.dao.selectFriend(user.getUserId(),start,end);
+			for(Friend f : list){
+				User fUser=f.getUser();
+				fUser.setImgurl(ftpConfig.getIMAGE_BASE_URL()+fUser.getImgurl());
+			}
 			msg = MSG.success();
 			msg.add("list", list);
 		} catch (Exception e) {
@@ -61,6 +70,10 @@ public class FriendController {
     	User user = (User)session.getAttribute("spaceUser");
     	try {
 			List<Friend> list = this.dao.selectAllFriendInfo(user.getUserId(),start,end);
+			for(Friend f : list){
+				User fUser=f.getUser();
+				fUser.setImgurl(ftpConfig.getIMAGE_BASE_URL()+fUser.getImgurl());
+			}
 			msg = MSG.success();
 			msg.add("list", list);
 		} catch (Exception e) {
